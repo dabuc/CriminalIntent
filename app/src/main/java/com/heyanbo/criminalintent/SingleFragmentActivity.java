@@ -1,0 +1,39 @@
+package com.heyanbo.criminalintent;
+
+import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
+
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.util.List;
+
+/**
+ * Created by kaite on 2015/3/7.
+ */
+public abstract class SingleFragmentActivity extends ActionBarActivity {
+
+    protected abstract Fragment createFragment();
+    protected int getLayoutResId(){
+        return R.layout.activity_fragment;
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d("SingleFragmentActivity","onCreate() called");
+        setContentView(getLayoutResId());
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment fragment = fm.findFragmentById(R.id.fragmentContainer);
+        if (fragment ==null) {
+            fragment = createFragment();
+            fm.beginTransaction().add(R.id.fragmentContainer,fragment).commit();
+        }
+    }
+}
